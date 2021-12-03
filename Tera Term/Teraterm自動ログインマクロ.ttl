@@ -1,0 +1,32 @@
+;================================================
+; Teraterm自動ログインマクロ
+;================================================
+username = '<ユーザ名>'
+password = '<パスワード>'
+hostname = '<サーバのホスト名 or IPアドレス>'
+logfilename = '<ログファイル名>'
+ 
+strconcat msg username
+msg = hostname
+strconcat msg ':22 /ssh /auth=password /user='
+; 「/auth=」で認証方法を指定
+; /auth=password:パスワード認証
+; /auth=publickey:公開鍵認証
+; /auth=challenge:チャレンジレスポンス認証
+; /auth=pageant:Pageantを使用した認証
+ 
+strconcat msg username
+strconcat msg ' /passwd='
+strconcat msg password
+ 
+connect msg
+ 
+; Teratermコンソールログを記録する
+logdir = 'C:\TeraTerm_logfiles\' ; ログファイルのパスを指定
+ 
+logfile = logdir
+strconcat logfile logfilename
+getdate datetime '-%Y%m%d-%H%M%S'
+strconcat logfile datetime
+strconcat logfile '.log'
+logopen logfile 0 1
